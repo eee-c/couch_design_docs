@@ -1,0 +1,4 @@
+module CouchDesignDocs
+  class Dir
+  end
+end
