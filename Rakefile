@@ -27,4 +27,6 @@ PROJ.rubyforge.name = 'couch_design_docs'
 
 PROJ.spec.opts << '--color'
 
+PROJ.gem.dependencies = %w{json jchris-couchrest}
+
 # EOF

@@ -1,5 +1,37 @@
-
 require File.join(File.dirname(__FILE__), %w[spec_helper])
+
+describe Store do
+  it "should require a CouchDB URL Root for instantiation" do
+    lambda { Store.new }.
+      should raise_error
+
+    lambda { Store.new("uri") }.
+      should_not raise_error
+  end
+
+  context "a valid store" do
+    before(:each) do
+      @it = Store.new("uri")
+
+      @hash = {
+        'a' => {
+          'b' => {
+            'c' => 'function(doc) { return true; }'
+          }
+        }
+      }
+    end
+
+    it "should be able to load a hash into design docs" do
+      RestClient.
+        should_receive(:put).
+        with("uri/_design/a",
+             '{"b":{"c":"function(doc) { return true; }"}}',
+             :content_type => 'application/json')
+      @it.load(@hash)
+    end
+  end
+end
 
 describe Directory do
   it "should require a root directory for instantiation" do
@@ -36,7 +68,6 @@ describe Directory do
     end
 
     it "should assemble all documents into a single docs structure" do
-      pending "you can do a better job with deep hash merging than that"
       @it.to_hash.
         should == {
         'a' => {

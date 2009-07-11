@@ -1,7 +1,16 @@
 require 'pp'
 
+class Hash
+  def deep_merge(other)
+    self.merge(other) do |key, oldval, newval|
+      oldval.deep_merge(newval)
+    end
+  end
+end
+
 module CouchDesignDocs
   class Directory
+
     attr_accessor :couch_view_dir
 
     def self.a_to_hash(a)
@@ -20,8 +29,9 @@ module CouchDesignDocs
 
     def to_hash
       Dir["#{couch_view_dir}/**/*.js"].inject({}) do |memo, filename|
-        hash = Directory.a_to_hash(expand_file(filename))
-        deep_hash_merge(memo, hash)
+        Directory.
+          a_to_hash(expand_file(filename)).
+          deep_merge(memo)
       end
     end
 
@@ -33,18 +43,6 @@ module CouchDesignDocs
        File.basename(filename, '.js'),
        File.new(filename).read
       ]
-    end
-
-    private
-    def deep_hash_merge(h1, h2)
-      h2.each_key do |k|
-        if h1.key? k
-          deep_hash_merge(h1[k], h2[k])
-        else
-          h1[k] = h2[k]
-        end
-      end
-      h1
     end
   end
 end

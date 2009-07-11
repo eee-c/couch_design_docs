@@ -8,15 +8,17 @@ Manage CouchDB views.
 
 == FEATURES/PROBLEMS:
 
-* FIXME (list of features or problems)
+* Not acutally working just yet :)
 
 == SYNOPSIS:
 
-  couch_view.load(COUCHDB_VIEW_DIRECTORY)
+  CouchDesignDocs.load(COUCHDB_VIEW_DIRECTORY)
 
 == REQUIREMENTS:
 
 * CouchDB
+* JSON
+* RestClient
 
 == INSTALL:
 
