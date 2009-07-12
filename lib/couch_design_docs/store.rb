@@ -11,10 +11,24 @@ module CouchDesignDocs
 
     def load(h)
       h.each_pair do |document_name, doc|
-        RestClient.put "#{url}/_design/#{document_name}",
-          doc.to_json,
-          :content_type => 'application/json'
+        Store.put("#{url}/_design/#{document_name}", doc)
       end
+    end
+
+    def self.put(path, doc)
+      RestClient.put path,
+        doc.to_json,
+        :content_type => 'application/json'
+    end
+
+    def self.delete(path)
+      # retrieve existing to obtain the revision
+      old = self.get(path)
+      RestClient.delete(path + "?rev=#{old['_rev']}")
+    end
+
+    def self.get(path)
+      JSON.parse(RestClient.get(path))
     end
   end
 end

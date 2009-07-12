@@ -30,6 +30,24 @@ describe Store do
              :content_type => 'application/json')
       @it.load(@hash)
     end
+
+    it "should be able to retrieve an existing document" do
+      RestClient.
+        stub!(:get).
+        and_return('{"_rev":"1234"}')
+
+      Store.get("uri").should == { '_rev' => "1234" }
+    end
+
+    it "should be able to delete an existing document" do
+      Store.stub!(:get).and_return({ '_rev' => '1234' })
+
+      RestClient.
+        should_receive(:delete).
+        with("uri?rev=1234")
+
+      Store.delete("uri")
+    end
   end
 end
 
