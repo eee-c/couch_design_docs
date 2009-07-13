@@ -22,6 +22,38 @@ describe Store do
       }
     end
 
+    it "should be able to put a new document" do
+      Store.
+        should_receive(:put).
+        with("uri", { })
+
+      Store.put!("uri", { })
+    end
+
+    it "should delete existing docs if first put fails" do
+      Store.
+        stub!(:put).
+        and_raise(RestClient::RequestFailed)
+
+      Store.
+        should_receive(:delete_and_put).
+        with("uri", { })
+
+      Store.put!("uri", { })
+    end
+
+    it "should be able to delete and put" do
+      Store.
+        should_receive(:delete).
+        with("uri")
+
+      Store.
+        should_receive(:put).
+        with("uri", { })
+
+      Store.delete_and_put("uri", { })
+    end
+
     it "should be able to load a hash into design docs" do
       RestClient.
         should_receive(:put).

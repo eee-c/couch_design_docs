@@ -2,17 +2,17 @@
 
 Gem::Specification.new do |s|
   s.name = %q{couch_design_docs}
-  s.version = "1.0.0"
+  s.version = "1.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Chris Strom"]
-  s.date = %q{2009-07-11}
+  s.date = %q{2009-07-12}
   s.default_executable = %q{couch_design_docs}
   s.description = %q{Manage CouchDB views.}
   s.email = %q{chris@eeecooks.com}
   s.executables = ["couch_design_docs"]
   s.extra_rdoc_files = ["History.txt", "README.txt", "bin/couch_design_docs"]
-  s.files = ["History.txt", "README.txt", "Rakefile", "bin/couch_design_docs", "fixtures/a/b/c.js", "fixtures/a/b/d.js", "lib/couch_design_docs.rb", "lib/couch_design_docs/directory.rb", "lib/couch_design_docs/store.rb", "spec/couch_design_docs_spec.rb", "spec/spec_helper.rb", "test/test_couch_design_docs.rb"]
+  s.files = ["History.txt", "README.txt", "Rakefile", "bin/couch_design_docs", "couch_design_docs.gemspec", "fixtures/a/b/c.js", "fixtures/a/b/d.js", "lib/couch_design_docs.rb", "lib/couch_design_docs/directory.rb", "lib/couch_design_docs/store.rb", "spec/couch_design_docs_spec.rb", "spec/spec_helper.rb", "test/test_couch_design_docs.rb"]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/eee-c/couch_design_docs}
   s.rdoc_options = ["--main", "README.txt"]

@@ -1,4 +1,4 @@
-require 'rest_client'
+require 'restclient'
 require 'json'
 
 module CouchDesignDocs
@@ -11,8 +11,21 @@ module CouchDesignDocs
 
     def load(h)
       h.each_pair do |document_name, doc|
-        Store.put("#{url}/_design/#{document_name}", doc)
+        Store.put!("#{url}/_design/#{document_name}", doc)
       end
+    end
+
+    # Create or replace the document located at "path" with the
+    # Hash document "doc"
+    def self.put!(path, doc)
+      self.put(path, doc)
+    rescue RestClient::RequestFailed
+      self.delete_and_put(path, doc)
+    end
+
+    def self.delete_and_put(path, doc)
+      self.delete(path)
+      self.put(path, doc)
     end
 
     def self.put(path, doc)
