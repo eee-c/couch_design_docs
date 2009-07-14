@@ -5,18 +5,26 @@ module CouchDesignDocs
   class Store
     attr_accessor :url
 
+    # Initialize a CouchDB store object.  Requires a URL for the
+    # target CouchDB database.
+    #
     def initialize(url)
       @url = url
     end
 
+    # Loads all supplied designed documents in the current store.
+    # Given a hash <tt>h</tt>, the keys being the CouchDB document
+    # name and values of design documents
+    #
     def load(h)
       h.each_pair do |document_name, doc|
         Store.put!("#{url}/_design/#{document_name}", doc)
       end
     end
 
-    # Create or replace the document located at "path" with the
-    # Hash document "doc"
+    # Create or replace the document located at <tt>path</tt> with the
+    # Hash document <tt>doc</tt>
+    #
     def self.put!(path, doc)
       self.put(path, doc)
     rescue RestClient::RequestFailed

@@ -1,8 +1,9 @@
+require 'pp'
 
 module CouchDesignDocs
 
   # :stopdoc:
-  VERSION = '1.0.1'
+  VERSION = '1.0.2'
   LIBPATH = ::File.expand_path(::File.dirname(__FILE__)) + ::File::SEPARATOR
   PATH = ::File.dirname(LIBPATH) + ::File::SEPARATOR
   # :startdoc:
@@ -11,6 +12,16 @@ module CouchDesignDocs
   #
   def self.version
     VERSION
+  end
+
+  # For a CouchDB database described by <tt>db_uri</tt> and a
+  # directory, <tt>dir</tt> containing design documents, creates
+  # design documents in the CouchDB database
+  #
+  def self.upload_dir(db_uri, dir)
+    store = Store.new(db_uri)
+    dir = Directory.new(dir)
+    store.load(dir.to_hash)
   end
 
   # Returns the library path for the module. If any arguments are given,

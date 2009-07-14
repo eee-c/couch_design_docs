@@ -1,5 +1,23 @@
 require File.join(File.dirname(__FILE__), %w[spec_helper])
 
+describe CouchDesignDocs do
+  it "should be able to load directory/JS files into CouchDB as design docs" do
+    store = mock("Store")
+    Store.stub!(:new).and_return(store)
+
+    dir = mock("Directory")
+    dir.stub!(:to_hash).and_return({ "foo" => "bar" })
+    Directory.stub!(:new).and_return(dir)
+
+    store.
+      should_receive(:load).
+      with({ "foo" => "bar" })
+
+    CouchDesignDocs.upload_dir("uri", "fixtures")
+  end
+end
+
+
 describe Store do
   it "should require a CouchDB URL Root for instantiation" do
     lambda { Store.new }.

@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{couch_design_docs}
-  s.version = "1.0.1"
+  s.version = "1.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Chris Strom"]
-  s.date = %q{2009-07-12}
+  s.date = %q{2009-07-13}
   s.default_executable = %q{couch_design_docs}
   s.description = %q{Manage CouchDB views.}
   s.email = %q{chris@eeecooks.com}

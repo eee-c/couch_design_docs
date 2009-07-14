@@ -8,11 +8,20 @@ Manage CouchDB views.
 
 == FEATURES/PROBLEMS:
 
-* Not acutally working just yet :)
+* Allows you to store your CouchDB design documents on the file system
+  with <tt>.js</tt> extensions.
 
 == SYNOPSIS:
 
-  CouchDesignDocs.load(COUCHDB_VIEW_DIRECTORY)
+  DB_URL = "http://localhost:5984/db"
+  DIRECTORY = "/repos/db/coudb/_design"
+
+  # /repos/db/coudb/_design/lucene/transform.js
+
+  CouchDesignDocs.upload_dir(DB_URL, DIRECTORY)
+
+  # => lucene design document with a "transform" function containing
+  #    the contents of transform.js
 
 == REQUIREMENTS:
 
@@ -22,7 +31,7 @@ Manage CouchDB views.
 
 == INSTALL:
 
-* sudo gem install couch_view
+* sudo gem install couch_design_docs
 
 == LICENSE:
 
