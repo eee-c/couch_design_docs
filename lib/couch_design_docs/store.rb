@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'restclient'
 require 'json'
 
@@ -12,11 +13,11 @@ module CouchDesignDocs
       @url = url
     end
 
-    # Loads all supplied designed documents in the current store.
+    # Loads all supplied design documents in the current store.
     # Given a hash <tt>h</tt>, the keys being the CouchDB document
     # name and values of design documents
     #
-    def load(h)
+    def put_design_documents(h)
       h.each_pair do |document_name, doc|
         Store.put!("#{url}/_design/#{document_name}", doc)
       end

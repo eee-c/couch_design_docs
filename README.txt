@@ -4,24 +4,30 @@ couch_design_docs
 
 == DESCRIPTION:
 
-Manage CouchDB views.
+Manage CouchDB views and documents.
 
 == FEATURES/PROBLEMS:
 
-* Allows you to store your CouchDB design documents on the file system
-  with <tt>.js</tt> extensions.
+* Store your CouchDB documents on the filesystem for on-demand
+  upload.  Design documents are kept in a <tt>_design</tt>
+  sub-directory, with <tt>.js</tt> extensions.  Normal documents are
+  stored with a <tt>.json</tt> extension.
 
 == SYNOPSIS:
 
   DB_URL = "http://localhost:5984/db"
-  DIRECTORY = "/repos/db/coudb/_design"
+  DIRECTORY = "/repos/db/couchdb/"
 
-  # /repos/db/coudb/_design/lucene/transform.js
+  # /repos/db/couchdb/_design/lucene/transform.js
+  # /repos/db/couchdb/foo.json
 
-  CouchDesignDocs.upload_dir(DB_URL, DIRECTORY)
+  CouchDesignDocs.put_dir(DB_URL, DIRECTORY)
 
   # => lucene design document with a "transform" function containing
   #    the contents of transform.js
+  #     - AND -
+  #    a document named "foo" with the JSON contents from the foo.json
+  #    file
 
 == REQUIREMENTS:
 

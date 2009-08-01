@@ -1,5 +1,3 @@
-require 'pp'
-
 class Hash
   def deep_merge(other)
     self.merge(other) do |key, oldval, newval|
@@ -9,7 +7,7 @@ class Hash
 end
 
 module CouchDesignDocs
-  class Directory
+  class DesignDirectory
 
     attr_accessor :couch_view_dir
 
@@ -29,7 +27,7 @@ module CouchDesignDocs
 
     def to_hash
       Dir["#{couch_view_dir}/**/*.js"].inject({}) do |memo, filename|
-        Directory.
+        DesignDirectory.
           a_to_hash(expand_file(filename)).
           deep_merge(memo)
       end

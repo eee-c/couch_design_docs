@@ -1,9 +1,7 @@
-require 'pp'
-
 module CouchDesignDocs
 
   # :stopdoc:
-  VERSION = '1.0.2'
+  VERSION = '1.1.0'
   LIBPATH = ::File.expand_path(::File.dirname(__FILE__)) + ::File::SEPARATOR
   PATH = ::File.dirname(LIBPATH) + ::File::SEPARATOR
   # :startdoc:
@@ -18,11 +16,36 @@ module CouchDesignDocs
   # directory, <tt>dir</tt> containing design documents, creates
   # design documents in the CouchDB database
   #
-  def self.upload_dir(db_uri, dir)
-    store = Store.new(db_uri)
-    dir = Directory.new(dir)
-    store.load(dir.to_hash)
+  def self.put_dir(db_uri, dir)
+    self.put_design_dir(db_uri, "#{dir}/_design")
+    self.put_document_dir(db_uri, dir)
   end
+
+  # Alias for <tt>put_dir</tt>
+  def self.upload_dir(db_uri, dir)
+    self.put_dir(db_uri, dir)
+  end
+
+  # Upload design documents from <tt>dir</tt> to the CouchDB database
+  # located at <tt>db_uri</tt>
+  #
+  def self.put_design_dir(db_uri, dir)
+    store = Store.new(db_uri)
+    dir = DesignDirectory.new(dir)
+    store.put_design_documents(dir.to_hash)
+  end
+
+  # Upload documents from <tt>dir</tt> to the CouchDB database
+  # located at <tt>db_uri</tt>
+  #
+  def self.put_document_dir(db_uri, dir)
+    store = Store.new(db_uri)
+    dir = DocumentDirectory.new(dir)
+    dir.each_document do |name, contents|
+      Store.put!("#{db_uri}/#{name}", contents)
+    end
+  end
+
 
   # Returns the library path for the module. If any arguments are given,
   # they will be joined to the end of the libray path using
