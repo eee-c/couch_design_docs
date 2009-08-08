@@ -45,6 +45,31 @@ describe CouchDesignDocs do
 
     CouchDesignDocs.put_document_dir("uri", "fixtures")
   end
+
+  context "dumping CouchDB documents to a directory" do
+    before(:each) do
+      @store = mock("Store")
+      Store.stub!(:new).and_return(@store)
+
+      @dir = mock("Document Directory")
+      DocumentDirectory.stub!(:new).and_return(@dir)
+    end
+    it "should be able to store all CouchDB documents on the filesystem" do
+      @store.stub!(:map).and_return([{'_id' => 'foo'}])
+      @dir.
+        should_receive(:store_document).
+        with({'_id' => 'foo'})
+
+      CouchDesignDocs.dump("uri", "fixtures")
+    end
+    it "should be able to store all CouchDB documents on the filesystem" do
+      @store.stub!(:map).and_return([{'_id' => '_design/foo'}])
+      @dir.
+        should_not_receive(:store_document)
+
+      CouchDesignDocs.dump("uri", "fixtures")
+    end
+  end
 end
 
 
@@ -128,6 +153,20 @@ describe Store do
 
       Store.delete("uri")
     end
+
+    it "should be able to load each document" do
+      Store.stub!(:get).
+        with("uri/_all_docs").
+        and_return({ "total_rows" => 2,
+                     "offset"     => 0,
+                     "rows"       => [{"id"=>"1", "value"=>{}, "key"=>"1"},
+                                      {"id"=>"2", "value"=>{}, "key"=>"2"}]})
+
+      Store.stub!(:get).with("uri/1")
+      Store.should_receive(:get).with("uri/2")
+
+      @it.each { }
+    end
   end
 end
 
@@ -156,6 +195,25 @@ describe DocumentDirectory do
       everything.
         should == [['bar', {"bar" => "2"}],
                    ['foo', {"foo" => "1"}]]
+    end
+
+    it "should be able to store a document" do
+      file = mock("File", :write => 42, :close => true)
+      File.
+        should_receive(:new).
+        with("fixtures/foo.json", "w+").
+        and_return(file)
+
+      @it.store_document({'_id' => 'foo'})
+    end
+
+    it "should be able to save a document as JSON" do
+      file = mock("File", :close => true)
+      File.stub!(:new).and_return(file)
+
+      file.should_receive(:write).with(%Q|{"_id":"foo"}|)
+
+      @it.store_document({'_id' => 'foo'})
     end
   end
 end

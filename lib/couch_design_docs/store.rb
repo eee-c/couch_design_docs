@@ -4,6 +4,8 @@ require 'json'
 
 module CouchDesignDocs
   class Store
+    include Enumerable
+
     attr_accessor :url
 
     # Initialize a CouchDB store object.  Requires a URL for the
@@ -51,6 +53,12 @@ module CouchDesignDocs
 
     def self.get(path)
       JSON.parse(RestClient.get(path))
+    end
+
+    def each
+      Store.get("#{url}/_all_docs")['rows'].each do |rec|
+        yield Store.get("#{url}/#{rec['id']}")
+      end
     end
   end
 end

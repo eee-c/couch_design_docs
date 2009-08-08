@@ -15,5 +15,11 @@ module CouchDesignDocs
 
       end
     end
+
+    def store_document(doc)
+      file = File.new("#{couch_doc_dir}/#{doc['_id']}.json", "w+")
+      file.write(doc.to_json)
+      file.close
+    end
   end
 end

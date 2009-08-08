@@ -1,7 +1,7 @@
 module CouchDesignDocs
 
   # :stopdoc:
-  VERSION = '1.1.0'
+  VERSION = '1.2.0'
   LIBPATH = ::File.expand_path(::File.dirname(__FILE__)) + ::File::SEPARATOR
   PATH = ::File.dirname(LIBPATH) + ::File::SEPARATOR
   # :startdoc:
@@ -46,6 +46,17 @@ module CouchDesignDocs
     end
   end
 
+  # Dump all documents located at <tt>db_uri</tt> into the directory
+  # <tt>dir</tt>
+  #
+  def self.dump(db_uri, dir)
+    store = Store.new(db_uri)
+    dir = DocumentDirectory.new(dir)
+    store.
+      map.
+      reject { |doc| doc['_id'] =~ /^_design/ }.
+      each   { |doc| dir.store_document(doc) }
+  end
 
   # Returns the library path for the module. If any arguments are given,
   # they will be joined to the end of the libray path using
